@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+
+<body>
+    <button id="openDbConfig">DB接続設定を開く</button>
+    <dialog id="dbDialog">
+        <iframe src="/views/db_setting.html" width="400" height="300" style="border:none;"></iframe>
+    </dialog>
+    <script src="/static/main_page.js"></script>
+
+
+    <form id="queryForm">
+        <label for="squInput">SQL入力欄</label><textarea cols="50" rows="5" id="sqlInput" type="text"
+            name="query"></textarea>
+        <button type="submit">解析</button>
+    </form>
+    <script type="module" src="/static/run_query.js"></script>
+    <script type="module" src="/static/display_sql_result.js"></script>
+
+    <p id="error_message" style="color: red;"></p>
+    <svg id="tables"></svg>
+    <table id="analysis_result"></table>
+
+</body>

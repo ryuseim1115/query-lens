@@ -1,0 +1,23 @@
+[project]
+name = "querylens"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "ryuseim1115",email = "ryusei.maebuchi@gmail.com"}
+]
+requires-python = ">=3.14"
+dependencies = [
+    "fastapi (>=0.135.1,<0.136.0)",
+    "uvicorn[standard] (>=0.41.0,<0.42.0)",
+    "mysql-connector-python (>=9.6.0,<10.0.0)",
+    "python-multipart (>=0.0.22,<0.0.23)",
+    "sqlglot (>=30.2.0,<31.0.0)",
+    "sqlalchemy (>=2.0.48,<3.0.0)",
+    "psycopg2-binary (>=2.9.11,<3.0.0)",
+    "pymysql (>=1.1.2,<2.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
