@@ -21,7 +21,6 @@ async function send_db_info(event) {
         body: JSON.stringify(data)
     });
     const result = await response.json();
-    console.log(result)
     if (result['is_connect']) {
         alert("DB接続に成功しました");
         window.parent.postMessage('db_connected', '*');

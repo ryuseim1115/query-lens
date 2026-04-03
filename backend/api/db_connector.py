@@ -14,7 +14,7 @@ class DbConnector:
         self.message = "未接続"
 
     def connect(self):
-        if self.database_type == "MySQL":
+        if self.database_type == "mysql":
             self.connect_mysql()
         return self.is_connect, self.message
 
@@ -32,7 +32,6 @@ class DbConnector:
                 password="password",
                 database="term2",
             )
-            print("test")
             if self.connection.is_connected():
                 self.is_connect = True
                 self.message = "正常に接続されました"
