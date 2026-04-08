@@ -23,7 +23,6 @@ class QueryValidator:
             self.error_msg = f"SQL構文が正しくありません: {str(e)}"
 
     def is_select_query(self):
-        print(self.expression.key)
         if self.expression and self.expression.key != "select":
             self.is_valid = False
             self.error_msg = "SELECT文以外の実行は許可されていません。"

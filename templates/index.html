@@ -9,10 +9,11 @@
 
 
     <form id="queryForm">
-        <label for="squInput">SQL入力欄</label><textarea cols="50" rows="5" id="sqlInput" type="text"
+        <label for="sqlInput">SQL入力欄</label><textarea cols="50" rows="5" id="sqlInput" type="text"
             name="query"></textarea>
         <button type="submit">解析</button>
     </form>
+    <div id="coloredSqlDisplay" style="border:1px solid #ccc; padding:8px; min-height:40px; background:#f9f9f9;"></div>
     <script type="module" src="/static/run_query.js"></script>
     <script type="module" src="/static/display_sql_result.js"></script>
 
