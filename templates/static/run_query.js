@@ -20,5 +20,6 @@ queryForm.addEventListener('submit', async (event) => {
     const result = await response.json();
     display_sql_result(result.sql_result);
     display_tables(result.tables);
+    document.getElementById('coloredSqlDisplay').innerHTML = result.colored_sql;
 
 });

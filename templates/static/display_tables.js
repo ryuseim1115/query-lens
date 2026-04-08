@@ -24,7 +24,12 @@ export function display_tables(tables) {
         text.setAttribute("y", y + TABLE_HEIGHT / 2);
         text.setAttribute("text-anchor", "middle");
         text.setAttribute("dominant-baseline", "central");
-        text.textContent = table;
+        text.textContent =
+            table == null
+                ? ""
+                : typeof table === "object"
+                    ? (table.name != null ? String(table.name) : JSON.stringify(table))
+                    : String(table);
         svg.appendChild(text);
     });
 }
