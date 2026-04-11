@@ -3,8 +3,7 @@ from pydantic import BaseModel
 from api.db_connector import DbConnector
 from api.dependencies import get_db
 from api.services.query_validator import QueryValidator
-from api.services.analyze import analyze
-from api.services.debug_sql_walk import SQLWalkDebugger
+from api.services.analyze_subquery import AnalyzeSubquery
 
 router = APIRouter()
 
@@ -21,14 +20,17 @@ def run_query(body: QueryRequest, db: DbConnector = Depends(get_db)):
         raise HTTPException(status_code=400, detail=str(error_msg))
     cursor = db.connection.cursor(dictionary=True)
     try:
-        cursor.execute(body.query)
-        sql_result = cursor.fetchall()
-        tables = analyze(body.query)
-        debugger = SQLWalkDebugger(body.query)
-        debugger.visualize()
-        colored_sql = debugger.get_colored_html()
-
-        return {"sql_result": sql_result, "tables": tables, "colored_sql": colored_sql}
+        subquery_analyzer = AnalyzeSubquery(body.query)
+        query_information = []
+        for query, depth in zip(
+            subquery_analyzer.subquery_texts, subquery_analyzer.subquery_depths
+        ):
+            cursor.execute(query)
+            query_result = cursor.fetchall()
+            query_information.append(
+                {"query": query, "depth": depth, "query_result": query_result}
+            )
+        return query_information
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
     finally:
