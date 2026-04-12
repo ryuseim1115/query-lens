@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QueryLens - DB接続</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #f9fafb;
+      --surface: #ffffff;
+      --border: #e5e7eb;
+      --accent: #6366f1;
+      --accent-lt: #eef2ff;
+      --text: #111827;
+      --muted: #6b7280;
+      --shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.04);
+      --radius: 12px;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ── 背景：メイン画面（ダミー） ── */
+    .bg-app {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      filter: blur(2px);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .bg-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      height: 52px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .bg-logo {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .bg-logo span {
+      color: var(--accent);
+    }
+
+    .bg-conn-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+      font-weight: 500;
+      padding: 0.3rem 0.75rem;
+      border-radius: 999px;
+      background: #f3f4f6;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    .bg-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #d1d5db;
+      flex-shrink: 0;
+    }
+
+    .bg-workspace {
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 1rem;
+      gap: 0.75rem;
+    }
+
+    .bg-panels {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 0.75rem;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .bg-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .bg-panel-label {
+      padding: 0.6rem 1rem;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .bg-sql {
+      flex: 1;
+      padding: 1rem 1.25rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      color: #d1d5db;
+      line-height: 1.8;
+    }
+
+    .bg-toolbar {
+      padding: 0.5rem 1rem;
+      border-top: 1px solid var(--border);
+      background: #fafafa;
+    }
+
+    .bg-btn {
+      background: #c7d2fe;
+      border: none;
+      border-radius: 6px;
+      padding: 0.35rem 1rem;
+      color: #a5b4fc;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    .bg-hint {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      color: #d1d5db;
+    }
+
+    .bg-preview {
+      height: 200px;
+      flex-shrink: 0;
+    }
+
+    .bg-preview-body {
+      padding: 0.75rem 1.25rem;
+      font-size: 0.78rem;
+      color: #d1d5db;
+    }
+
+    /* ── オーバーレイ ── */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(17, 24, 39, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    /* ── モーダル ── */
+    .modal {
+      position: relative;
+      background: rgba(255, 255, 255, 0.97);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem 2rem 1.75rem;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.06);
+    }
+
+    .modal-logo {
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-bottom: 0.2rem;
+    }
+
+    .modal-logo span {
+      color: var(--accent);
+    }
+
+    .modal-tagline {
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 1.75rem;
+    }
+
+    .modal-title {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.6rem;
+      margin-bottom: 1.1rem;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      width: 28px;
+      height: 28px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 0.9rem;
+      cursor: default;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .field-group {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .field {
+      margin-bottom: 0.75rem;
+    }
+
+    .field:last-of-type {
+      margin-bottom: 0;
+    }
+
+    label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 0.3rem;
+      letter-spacing: 0.02em;
+    }
+
+    input {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.55rem 0.75rem;
+      font-size: 0.875rem;
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      outline: none;
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.65rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: default;
+      margin-top: 1.25rem;
+      box-shadow: 0 1px 4px rgba(99, 102, 241, 0.3);
+    }
+
+    /* ── 吹き出し ── */
+    .callout-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 200;
+    }
+
+    .callout {
+      position: absolute;
+      background: #fef9c3;
+      color: #713f12;
+      border: 1px solid #fde047;
+      font-size: 0.7rem;
+      line-height: 1.5;
+      padding: 0.4rem 0.6rem;
+      border-radius: 6px;
+      max-width: 150px;
+      box-shadow: 2px 3px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .callout strong {
+      color: #92400e;
+      display: block;
+      margin-bottom: 0.1rem;
+      font-size: 0.71rem;
+    }
+
+    .callout::after {
+      content: '';
+      position: absolute;
+      border: 6px solid transparent;
+    }
+
+    .callout.arrow-right::after {
+      right: -12px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-left-color: #fde047;
+    }
+
+    .callout.arrow-left::after {
+      left: -12px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-right-color: #fde047;
+    }
+
+    .callout.arrow-bottom::after {
+      bottom: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-top-color: #fde047;
+    }
+
+    .callout.arrow-top::after {
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-bottom-color: #fde047;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- 背景：メイン画面（ダミー） -->
+  <div class="bg-app">
+    <div class="bg-header">
+      <div class="bg-logo">Query<span>Lens</span></div>
+      <div class="bg-conn-badge"><span class="bg-dot"></span>未接続</div>
+    </div>
+    <div class="bg-workspace">
+      <div class="bg-panels">
+        <div class="bg-card">
+          <div class="bg-panel-label">SQL Editor</div>
+          <div class="bg-sql">
+            SELECT sub.customer_name, COUNT(p.id) AS purchase_count<br>
+            FROM (<br>
+            &nbsp;&nbsp;SELECT c.id, c.name AS customer_name<br>
+            &nbsp;&nbsp;FROM customers c<br>
+            &nbsp;&nbsp;JOIN orders o ON c.id = o.customer_id<br>
+            &nbsp;&nbsp;WHERE o.status = 'active'<br>
+            ) sub<br>
+            JOIN purchases p ON sub.id = p.customer_id<br>
+            GROUP BY sub.customer_name<br>
+            ORDER BY purchase_count DESC;
+          </div>
+          <div class="bg-toolbar">
+            <div class="bg-btn">▶ 実行</div>
+          </div>
+        </div>
+        <div class="bg-card">
+          <div class="bg-panel-label">Analysis Results</div>
+          <div class="bg-hint">SQLを実行して構造を解析</div>
+        </div>
+      </div>
+      <div class="bg-card bg-preview">
+        <div class="bg-panel-label">Data Preview</div>
+        <div class="bg-preview-body">サブクエリを選択すると中間データが表示されます</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- オーバーレイ + モーダル -->
+  <div class="overlay">
+    <div class="modal" id="modal">
+      <button class="modal-close">✕</button>
+      <div class="modal-logo">Query<span>Lens</span></div>
+      <p class="modal-tagline">SQLを『読む』から『視る』へ</p>
+      <div class="modal-title">🔗 データベース接続</div>
+      <div class="field-group">
+        <div><label>Host</label><input id="f-host" type="text" value="localhost"></div>
+        <div><label>Port</label><input id="f-port" type="text" value="5432"></div>
+      </div>
+      <div class="field"><label>DB名</label><input id="f-db" type="text" placeholder="database_name"></div>
+      <div class="field"><label>ユーザー名</label><input id="f-user" type="text" placeholder="admin"></div>
+      <div class="field"><label>パスワード</label><input id="f-pass" type="password" placeholder="••••••••"></div>
+      <button class="btn-submit" id="f-submit">接続する</button>
+    </div>
+  </div>
+
+  <!-- 吹き出しレイヤー -->
+  <div class="callout-layer" id="calloutLayer"></div>
+
+  <script>
+    window.addEventListener('load', () => {
+      const layer = document.getElementById('calloutLayer');
+      const modal = document.getElementById('modal');
+      const mx = modal.getBoundingClientRect().right + 14;
+
+      const defs = [
+        { id: 'modal', dy: 10, title: '閉じるボタン', desc: '未接続のままメイン画面へ戻る' },
+        { id: 'f-submit', dy: -8, title: '接続する', desc: '入力内容を検証しDB接続。成功するとメイン画面へ遷移' },
+      ];
+
+      defs.forEach(def => {
+        const el = document.getElementById(def.id);
+        if (!el) return;
+        const r = el.getBoundingClientRect();
+        const box = document.createElement('div');
+        box.className = 'callout arrow-left';
+        box.style.left = mx + 'px';
+        box.style.top = (r.top + def.dy) + 'px';
+        box.innerHTML = `<strong>${def.title}</strong>${def.desc}`;
+        layer.appendChild(box);
+      });
+    });
+  </script>
+</body>
+
+</html>
