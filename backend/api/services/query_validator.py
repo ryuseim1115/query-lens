@@ -8,12 +8,8 @@ class QueryValidator:
         self.is_valid = True
         self.error_msg = ""
         self.expression = None
-
-    def validate_query(self):
         self.is_valid_syntax()
         self.is_select_query()
-
-        return self.is_valid, self.error_msg
 
     def is_valid_syntax(self):
         try:
