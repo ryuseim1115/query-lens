@@ -1,17 +1,17 @@
 
 
-export function display_sql_result(sql_result) {
+export function display_query_result(query_result) {
     const resultTable = document.getElementById("analysis_result")
     resultTable.innerHTML = '';
 
-    if (!sql_result || sql_result.length === 0) {
+    if (!query_result || query_result.length === 0) {
         resultTable.textContent = "検索結果は0件です"
         return
     }
 
-    const columnsVal = Object.keys(sql_result[0])
+    const columnsVal = Object.keys(query_result[0])
     display_columns(resultTable, columnsVal)
-    display_values(resultTable, columnsVal, sql_result)
+    display_values(resultTable, columnsVal, query_result)
 }
 
 function display_columns(resultTable, columnsVal) {
@@ -28,9 +28,9 @@ function display_columns(resultTable, columnsVal) {
     resultTable.appendChild(thead)
 }
 
-function display_values(resultTable, columnsVal, sql_result) {
+function display_values(resultTable, columnsVal, query_result) {
     const tbody = document.createElement('tbody')
-    sql_result.forEach(record => {
+    query_result.forEach(record => {
         const row = document.createElement('tr')
 
         columnsVal.forEach(columnVal => {
