@@ -5,11 +5,12 @@ import { display_tables } from "./display_tables.js"
 const queryForm = document.getElementById('queryForm')
 queryForm.addEventListener('submit', async (event) => {
     event.preventDefault();
+    const databaseType = document.getElementById('databaseType').value;
     const query = document.getElementById('queryInput').value;
     const response = await fetch('/run-query', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: query }),
+        body: JSON.stringify({ database_type: databaseType, query: query }),
     });
     if (!response.ok) {
         const error = await response.json();
