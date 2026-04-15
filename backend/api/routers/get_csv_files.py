@@ -9,7 +9,7 @@ CSV_FILES_DIR = os.path.abspath(
 )
 
 
-@router.get("/csv-files")
+@router.get("/get-csv-files")
 def get_csv_files():
     if not os.path.isdir(CSV_FILES_DIR):
         return {"CSV_FILES_DIR": CSV_FILES_DIR, "csv_files": []}
