@@ -2,7 +2,8 @@ from fastapi import FastAPI
 import os
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
-from api.routers import connection, run_query
+from api.routers import connection, run_query, get_csv_files
+
 
 app = FastAPI()
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -15,9 +16,11 @@ app.mount("/views", StaticFiles(directory=views_path), name="views")
 
 app.include_router(connection.router)
 app.include_router(run_query.router)
+app.include_router(get_csv_files.router)
 
 
 @app.get("/index")
 def home():
     file_path = os.path.join("..", "templates", "index.html")
+    print(file_path)
     return FileResponse(file_path)

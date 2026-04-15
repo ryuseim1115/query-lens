@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 
 <body>
-    <button id="openDbConfig">DB接続設定を開く</button>
-    <dialog id="dbDialog">
-        <iframe src="/views/db_setting.html" width="400" height="300" style="border:none;"></iframe>
+    <button id="openCsvFileList">解析可能なCSVファイル一覧の表示</button>
+    <dialog id="csvFileList">
+        <h2>解析対象ファイル</h2>
+        <small id="csvFilePath"></small>
+        <ul id="csvFileItems"></ul>
+        <button id="closeCsvFileList">閉じる</button>
     </dialog>
     <script src="/static/main_page.js"></script>
 

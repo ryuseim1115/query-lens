@@ -1,18 +1,26 @@
-const dialog = document.getElementById('dbDialog');
-const openDbCongigBtn = document.getElementById('openDbConfig');
+const dialog = document.getElementById('csvFileList');
+const openCsvFileListBtn = document.getElementById('openCsvFileList');
+const closeCsvFileListBtn = document.getElementById('closeCsvFileList');
+const csvFileItems = document.getElementById('csvFileItems');
 
+openCsvFileListBtn.addEventListener('click', async () => {
+    const response = await fetch('/csv-files');
+    const data = await response.json();
 
-// モーダルとして開く
-openDbCongigBtn.addEventListener('click', () => {
+    document.getElementById('csvFilePath').textContent = `※解析対象ファイルは ${data.CSV_FILES_DIR} 配下のファイルです`;
+
+    csvFileItems.innerHTML = '';
+    data.csv_files.forEach((file) => {
+        const li = document.createElement('li');
+        li.textContent = file;
+        csvFileItems.appendChild(li);
+    });
+
     dialog.showModal();
 });
 
-// iframeからの接続成功通知を受け取りボタンを非活性化
-window.addEventListener('message', (event) => {
-    if (event.data === 'db_connected') {
-        openDbCongigBtn.textContent = 'DB接続済'
-        openDbCongigBtn.disabled = true;
-    }
+closeCsvFileListBtn.addEventListener('click', () => {
+    dialog.close();
 });
 
 
