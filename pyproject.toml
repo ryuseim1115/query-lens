@@ -15,7 +15,8 @@ dependencies = [
     "sqlalchemy (>=2.0.48,<3.0.0)",
     "psycopg2-binary (>=2.9.11,<3.0.0)",
     "pymysql (>=1.1.2,<2.0.0)",
-    "graphviz (>=0.21,<0.22)"
+    "graphviz (>=0.21,<0.22)",
+    "duckdb (>=1.5.2,<2.0.0)"
 ]
 
 
