@@ -2,15 +2,17 @@ import { display_query_result } from "./display_query_result.js"
 import { display_tables } from "./display_tables.js"
 
 
-const queryForm = document.getElementById('queryForm')
-queryForm.addEventListener('submit', async (event) => {
-    event.preventDefault();
-    const databaseType = document.getElementById('databaseType').value;
-    const query = document.getElementById('queryInput').value;
+
+const analysisStartBtn = document.getElementById('analysisStartBtn')
+analysisStartBtn.addEventListener('click', async () => {
+    const queryForm = document.getElementById('queryForm')
+    const queryInfoDict = new FormData(queryForm)
+    const queryInfo = Object.fromEntries(queryInfoDict.entries())
+
     const response = await fetch('/run-query', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ database_type: databaseType, query: query }),
+        body: JSON.stringify(queryInfo),
     });
     if (!response.ok) {
         const error = await response.json();

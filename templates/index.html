@@ -1,30 +1,40 @@
 <!DOCTYPE html>
 
 <body>
-    <button id="openCsvFileList">解析可能なCSVファイル一覧の表示</button>
+    <button id="openCsvFileList">解析可能なCSVファイル一覧の確認</button>
     <dialog id="csvFileList">
         <h2>解析対象ファイル</h2>
         <small id="csvFilePath"></small>
         <ul id="csvFileItems"></ul>
+
+        <button id="determineCsvFile">解析対象を確定する</button>
         <button id="closeCsvFileList">閉じる</button>
     </dialog>
-    <script src="/static/main_page.js"></script>
 
+    <dialog id="confirmAnalyzeTarget">
+        <form id="determineCsvFile">
+            <button type="button" id="yes" value=1>はい</button>
+            <button type="button" id="no" value=0>いいえ</button>
+        </form>
+
+    </dialog>
 
     <form id="queryForm">
-        <select id="databaseType">
+        <select name="databaseType">
             <option value="mysql">MySQL</option>
             <option value="postgresql">PostgreSQL</option>
             <option value="sqlite">SQLite</option>
         </select>
         <label for="queryInput">クエリ入力欄</label><textarea cols="50" rows="5" id="queryInput" type="text"
             name="query"></textarea>
-        <button type="submit">解析</button>
+        <button type="button" id="analysisStartBtn">解析</button>
     </form>
     <div id="coloredQueryDisplay" style="border:1px solid #ccc; padding:8px; min-height:40px; background:#f9f9f9;">
     </div>
+    <script type="module" src="/static/main_page.js"></script>
     <script type="module" src="/static/run_query.js"></script>
     <script type="module" src="/static/display_query_result.js"></script>
+    <script type="module" src="/static/confirm_csv_file.js"></script>
 
     <p id="error_message" style="color: red;"></p>
     <svg id="tables"></svg>

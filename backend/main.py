@@ -2,7 +2,7 @@ from fastapi import FastAPI
 import os
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
-from api.routers import run_query, get_csv_files
+from api.routers import run_query, get_csv_files, determine_csv_file
 
 
 app = FastAPI()
@@ -15,6 +15,7 @@ app.mount("/static", StaticFiles(directory=static_path), name="static")
 
 app.include_router(run_query.router)
 app.include_router(get_csv_files.router)
+app.include_router(determine_csv_file.router)
 
 
 @app.get("/index")
