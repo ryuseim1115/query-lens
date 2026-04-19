@@ -8,7 +8,7 @@ export let csvData = null;
 openCsvFileListBtn.addEventListener('click', async () => {
     const response = await fetch('/get-csv-files');
     csvData = await response.json();
-    console.log(csvData)
+
 
     document.getElementById('csvFilePath').textContent = `※解析対象ファイルは ${csvData.CSV_FILES_DIR} 配下のファイルです`;
 

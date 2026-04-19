@@ -1,20 +1,18 @@
-
-
-export function display_query_result(query_result) {
-    const resultTable = document.getElementById("analysis_result")
+export function displayQueryResult(queryResult) {
+    const resultTable = document.getElementById("analysisResult")
     resultTable.innerHTML = '';
 
-    if (!query_result || query_result.length === 0) {
+    if (!queryResult || queryResult.length === 0) {
         resultTable.textContent = "検索結果は0件です"
         return
     }
 
-    const columnsVal = Object.keys(query_result[0])
-    display_columns(resultTable, columnsVal)
-    display_values(resultTable, columnsVal, query_result)
+    const columnsVal = Object.keys(queryResult[0])
+    displayColumns(resultTable, columnsVal)
+    displayValues(resultTable, columnsVal, queryResult)
 }
 
-function display_columns(resultTable, columnsVal) {
+function displayColumns(resultTable, columnsVal) {
     const thead = document.createElement('thead')
     const headerRow = document.createElement('tr')
 
@@ -28,9 +26,9 @@ function display_columns(resultTable, columnsVal) {
     resultTable.appendChild(thead)
 }
 
-function display_values(resultTable, columnsVal, query_result) {
+function displayValues(resultTable, columnsVal, queryResult) {
     const tbody = document.createElement('tbody')
-    query_result.forEach(record => {
+    queryResult.forEach(record => {
         const row = document.createElement('tr')
 
         columnsVal.forEach(columnVal => {
