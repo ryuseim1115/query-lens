@@ -1,3 +1,4 @@
+from typing import Any
 from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
 
@@ -13,6 +14,8 @@ class QueryInfo(BaseModel):
 class SubqueryAnalyzeResult(BaseModel):
     query: str
     depth: int
+    result: list[dict[str, Any]]
+    error: str | None = None
 
 
 SubqueryAnalyzeResultList = list[SubqueryAnalyzeResult]
