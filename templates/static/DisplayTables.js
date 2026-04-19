@@ -1,10 +1,9 @@
 
-
 const TABLE_WIDTH = 120;
 const TABLE_HEIGHT = 30;
 const TABLE_MARGIN = 10;
 
-export function display_tables(tables) {
+export function displayTables(tables) {
     const svg = document.getElementById("tables")
     svg.innerHTML = '';
     tables.forEach((table, i) => {

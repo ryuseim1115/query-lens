@@ -1,7 +1,5 @@
-import { display_query_result } from "./display_query_result.js"
-import { display_tables } from "./display_tables.js"
-
-
+import { displayQueryResult } from "./DisplayQueryResult.js"
+import { displayTables } from "./DisplayTables.js"
 
 const analysisStartBtn = document.getElementById('analysisStartBtn')
 analysisStartBtn.addEventListener('click', async () => {
@@ -16,13 +14,12 @@ analysisStartBtn.addEventListener('click', async () => {
     });
     if (!response.ok) {
         const error = await response.json();
-        document.getElementById('error_message').textContent = error.detail;
+        document.getElementById('errorMessage').textContent = error.detail;
         return;
     }
-    document.getElementById('error_message').textContent = '';
+    document.getElementById('errorMessage').textContent = '';
     const result = await response.json();
-    display_query_result(result.query_result);
-    display_tables(result.tables);
+    displayQueryResult(result.query_result);
+    displayTables(result.tables);
     document.getElementById('coloredQueryDisplay').innerHTML = result.colored_query;
-
 });

@@ -1,8 +1,8 @@
-import { csvData } from "./main_page.js"
+import { csvData } from "./MainPage.js"
 
 const yesBtn = document.getElementById("yes")
 const noBtn = document.getElementById("no")
-const confirmAnalyzeTargeDialog = document.getElementById("confirmAnalyzeTarget")
+const confirmAnalyzeTargetDialog = document.getElementById("confirmAnalyzeTarget")
 
 yesBtn.addEventListener('click', async () => {
     const response = await fetch('/determine-csv-file', {
@@ -10,8 +10,14 @@ yesBtn.addEventListener('click', async () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(csvData),
     })
+    if (!response.ok) {
+        const error = await response.json();
+        console.error(error.detail);
+        return;
+    }
+    confirmAnalyzeTargetDialog.close();
 })
 
 noBtn.addEventListener('click', () => {
-    confirmAnalyzeTargeDialog.close();
+    confirmAnalyzeTargetDialog.close();
 })
