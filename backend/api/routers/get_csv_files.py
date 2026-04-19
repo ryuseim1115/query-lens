@@ -1,12 +1,8 @@
 from fastapi import APIRouter
 import os
+from config import CSV_FILES_DIR
 
 router = APIRouter()
-
-
-CSV_FILES_DIR = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), "..", "..", "..", "csv_files")
-)
 
 
 @router.get("/get-csv-files")

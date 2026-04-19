@@ -6,7 +6,6 @@
     <title>QueryLens</title>
     <script type="module" src="/static/MainPage.js"></script>
     <script type="module" src="/static/RunQuery.js"></script>
-    <script type="module" src="/static/ConfirmCsvFile.js"></script>
 </head>
 
 <body>
@@ -28,16 +27,10 @@
     <dialog id="csvFileList">
         <h2>解析対象ファイル</h2>
         <small id="csvFilePath"></small>
-        <ul id="csvFileItems"></ul>
+        <ol id="csvFileItems"></ol>
         <button id="determineCsvFile">解析対象を確定する</button>
         <button id="closeCsvFileList">閉じる</button>
-    </dialog>
-
-    <dialog id="confirmAnalyzeTarget">
-        <form id="confirmCsvFileForm">
-            <button type="button" id="yes" value="1">はい</button>
-            <button type="button" id="no" value="0">いいえ</button>
-        </form>
+        <p id="csvFileErrorMessage" style="color: red; white-space: pre-line;"></p>
     </dialog>
 
     <dialog id="analysisModal">
