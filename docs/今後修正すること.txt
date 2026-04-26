@@ -1,0 +1,17 @@
+## バリデーション
+1. QueryValidator WITH句対応
+   - WITH ... AS (...) SELECT ...（CTE）は expression.key が "with" になるため現状弾かれてしまう
+   - 対応方針: WITH句を検出したらその中の SELECT を再帰的に検証する
+
+## CSVファイル
+2. ファイルサイズチェック
+   - 極端に大きいファイルでメモリ不足になる可能性
+   - 対応方針: アップロード時またはテーブル作成前にファイルサイズの上限チェックを追加する
+3. CSVフォーマットチェック
+   - 実際にCSVとして読めるか（ヘッダー行があるかなど）未検証
+   - 対応方針: create_csv_tables でファイルを読み込む前にヘッダー行の有無を確認する
+
+## 設計改善
+4. run_subqueries の責務分離
+   - depth（クエリ構造の深さ）はDB実行と無関係なのに SubqueryAnalyzeResult に含まれている
+   - 対応方針: DB層は (query, rows, error) だけを返し、呼び出し元で depth とマージする設計に変更する

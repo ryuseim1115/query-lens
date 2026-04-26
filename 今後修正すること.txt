@@ -1,3 +1,0 @@
-1. ファイルサイズ — 極端に大きいファイルでメモリ不足になる可能性
-2. CSVフォーマット — 実際にCSVとして読めるか（ヘッダー行があるかなど）
-3. QueryValidator WITH句対応 — WITH ... AS (...) SELECT ...（CTE）は expression.key が "with" になるため現状弾かれてしまう
