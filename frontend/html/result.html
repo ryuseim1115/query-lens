@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QueryLens - 解析結果</title>
+  <link rel="stylesheet" href="/css/result.css">
+</head>
+
+<body>
+
+  <header>
+    <button class="back-btn" onclick="location.href='/input'">← 戻る</button>
+    <div class="logo">Query<span>Lens</span></div>
+  </header>
+
+  <div class="tables-panel">
+    <div class="panel-header">テーブル一覧</div>
+    <div id="tables">
+      <span style="color:#64748b;font-size:0.82rem;">読み込み中…</span>
+    </div>
+  </div>
+
+  <div class="query-panel">
+    <div class="panel-header">クエリ</div>
+    <div class="query-body">
+      <pre id="query-display"></pre>
+    </div>
+  </div>
+
+<div class="result-panel">
+    <div class="panel-header">実行結果</div>
+    <div class="result-body">
+      <div class="result-hint">読み込み中…</div>
+    </div>
+  </div>
+
+  <script type="module" src="/static/pages/Result.js"></script>
+</body>
+
+</html>
