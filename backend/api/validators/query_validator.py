@@ -1,5 +1,6 @@
 import sqlglot
-from sqlglot import parse_one, errors
+from sqlglot import parse_one, exp, errors
+from api.db.connection import get_connection
 
 
 class QueryValidator:
@@ -16,4 +17,23 @@ class QueryValidator:
         if expression.key != "select":
             raise ValueError("SELECT文以外の実行は許可されていません。")
 
+        self._validate_tables(expression)
         return expression
+
+    def _validate_tables(self, expression: sqlglot.Expression) -> None:
+        cte_names = {cte.alias for cte in expression.find_all(exp.CTE)}
+        query_tables = {
+            table.name
+            for table in expression.find_all(exp.Table)
+            if table.name and table.name not in cte_names
+        }
+        if not query_tables:
+            return
+
+        con = get_connection()
+        existing = {row[0] for row in con.sql("SHOW TABLES").fetchall()}
+        missing = query_tables - existing
+        if missing:
+            raise ValueError(
+                f"次のテーブルに対応するCSVファイルがアップロードされていません: {', '.join(sorted(missing))}"
+            )
