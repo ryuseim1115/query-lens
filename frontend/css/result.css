@@ -108,6 +108,17 @@ header {
   border-color: var(--accent);
 }
 
+.subquery-group {
+  margin-bottom: 0.5rem;
+}
+.subquery-group:last-child {
+  margin-bottom: 0;
+}
+
+.table-item--alias {
+  border-color: #3b82f6;
+}
+
 .depth-separator {
   padding: 0 0.5rem;
   color: var(--muted);

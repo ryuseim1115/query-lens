@@ -19,6 +19,7 @@ class QueryStructureAnalyzer:
                 from_table=subquery.from_table,
                 from_subquery=subquery.from_subquery,
                 cte_name=subquery.cte_name,
+                parent_alias=subquery.parent_alias,
                 tables=(
                     ([subquery.from_table] if subquery.from_table else ([subquery.from_alias] if subquery.from_alias else []))
                     + [j.right_table if j.right_table else j.right_alias for j in subquery.joins if j.right_table or j.right_alias]
