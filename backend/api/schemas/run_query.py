@@ -57,6 +57,7 @@ class SubqueryAnalyzeResult(BaseModel):
     from_table: str | None = None
     from_subquery: str | None = None
     cte_name: str | None = None
+    parent_alias: str | None = None
 
 
 SubqueryAnalyzeResultList = list[SubqueryAnalyzeResult]
