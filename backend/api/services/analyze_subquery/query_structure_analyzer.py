@@ -14,11 +14,6 @@ class QueryStructureAnalyzer:
                 depth=subquery.depth,
                 start_index=subquery.start_index,
                 end_index=subquery.end_index,
-                joins=subquery.joins,
-                from_alias=subquery.from_alias,
-                from_table=subquery.from_table,
-                from_subquery=subquery.from_subquery,
-                cte_name=subquery.cte_name,
                 parent_alias=subquery.parent_alias,
                 tables=(
                     ([subquery.from_table] if subquery.from_table else ([subquery.from_alias] if subquery.from_alias else []))

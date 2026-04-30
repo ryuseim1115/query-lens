@@ -4,7 +4,6 @@ from api.services.analyze_subquery.query_structure_analyzer import (
     QueryStructureAnalyzer,
 )
 from api.services.analyze_subquery.subquery_runner import SubqueryRunner
-from api.services.analyze_subquery.join_preview_builder import JoinPreviewBuilder
 from api.services.analyze_subquery.sort_subquery import SortSubquery
 from api.validators.query_validator import QueryValidator
 
@@ -18,7 +17,6 @@ def run_query(body: QueryInfo):
         subqueries = QueryStructureAnalyzer(body.query).execute()
         subqueries = SortSubquery(subqueries).execute()
         subqueries = SubqueryRunner(subqueries).execute()
-        subqueries = JoinPreviewBuilder(subqueries).execute()
         return RunQueryResponse(subqueries=subqueries)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
