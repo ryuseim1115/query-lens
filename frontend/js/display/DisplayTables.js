@@ -1,4 +1,5 @@
 import { highlightQuery } from './DisplayQuery.js'
+import { displayQueryResult } from './DisplayQueryResult.js'
 
 export function displayTables(subqueries) {
     const tablesEl = document.getElementById('tables')
@@ -27,6 +28,7 @@ export function displayTables(subqueries) {
             tableEl.className = 'table-item'
             tableEl.textContent = table
             tableEl.addEventListener('click', () => highlightQuery(subquery.start_index, subquery.end_index))
+            tableEl.addEventListener('click', () => displayQueryResult(subquery.start_index))
             subqueryGroupEl.appendChild(tableEl)
         })
 
