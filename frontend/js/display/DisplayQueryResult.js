@@ -1,45 +1,35 @@
-export function displayQueryResult(queryResult) {
-    const resultTable = document.getElementById("analysisResult")
-    resultTable.innerHTML = '';
 
-    if (!queryResult || queryResult.length === 0) {
-        resultTable.textContent = "検索結果は0件です"
-        return
-    }
+export function displayQueryResult(start_index) {
+    const stored = JSON.parse(sessionStorage.getItem('querySession'))
+    const subquery = stored.subqueryResults.find(s => s.start_index === start_index)
+    const rows = subquery.result
 
-    const columnsVal = Object.keys(queryResult[0])
-    displayColumns(resultTable, columnsVal)
-    displayValues(resultTable, columnsVal, queryResult)
+    const thead = document.querySelector('.result-body thead')
+    const tbody = document.querySelector('.result-body tbody')
+    thead.replaceChildren()
+    tbody.replaceChildren()
+
+    const columns = Object.keys(rows[0])
+    thead.appendChild(buildHeaderRow(columns))
+    rows.forEach(row => tbody.appendChild(buildDataRow(row, columns)))
 }
 
-function displayColumns(resultTable, columnsVal) {
-    const thead = document.createElement('thead')
-    const headerRow = document.createElement('tr')
-
-    columnsVal.forEach(columnVal => {
-        const columnTh = document.createElement("th");
-        columnTh.textContent = columnVal;
-        headerRow.appendChild(columnTh);
+function buildHeaderRow(columns) {
+    const tr = document.createElement('tr')
+    columns.forEach(col => {
+        const th = document.createElement('th')
+        th.textContent = col
+        tr.appendChild(th)
     })
-
-    thead.appendChild(headerRow)
-    resultTable.appendChild(thead)
+    return tr
 }
 
-function displayValues(resultTable, columnsVal, queryResult) {
-    const tbody = document.createElement('tbody')
-    queryResult.forEach(record => {
-        const row = document.createElement('tr')
-
-        columnsVal.forEach(columnVal => {
-            const recordTd = document.createElement("td");
-            const value = record?.[columnVal]
-            recordTd.textContent = (value === null || value === undefined) ? '' : String(value)
-            row.appendChild(recordTd);
-        })
-
-        tbody.appendChild(row)
+function buildDataRow(row, columns) {
+    const tr = document.createElement('tr')
+    columns.forEach(col => {
+        const td = document.createElement('td')
+        td.textContent = row[col]
+        tr.appendChild(td)
     })
-
-    resultTable.appendChild(tbody)
+    return tr
 }
