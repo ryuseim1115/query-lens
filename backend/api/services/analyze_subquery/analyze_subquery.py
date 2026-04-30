@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 import sqlglot
 
 from api.schemas.run_query import JoinInfo
