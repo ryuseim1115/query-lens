@@ -1,7 +1,9 @@
 import { highlightQuery } from './DisplayQuery.js'
 
 export function displayTables(subqueries) {
-    const tablesEl = document.getElementById('tables')
+    if (!subqueries.length) return;
+
+    const tablesEl = document.querySelector('.tables-list')
     tablesEl.innerHTML = ''
     tablesEl.style.display = 'flex'
     tablesEl.style.alignItems = 'flex-start'
@@ -25,13 +27,22 @@ export function displayTables(subqueries) {
         subquery.tables_name_alias.forEach(table => {
             const tableEl = document.createElement('div')
             tableEl.className = 'table-item'
+            tableEl.setAttribute('role', 'button')
+            tableEl.setAttribute('tabindex', '0')
             tableEl.textContent = table.name && table.alias
                 ? `${table.name} (${table.alias})`
                 : table.name || table.alias
             tableEl.dataset.alias = table.alias || ''
-            tableEl.addEventListener('click', (e) => {
+            const activate = (e) => {
                 e.stopPropagation()
                 highlightQuery(subquery.start_index, subquery.end_index)
+            }
+            tableEl.addEventListener('click', activate)
+            tableEl.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    activate(e)
+                }
             })
             subqueryGroupEl.appendChild(tableEl)
         })
