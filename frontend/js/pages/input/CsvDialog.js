@@ -11,36 +11,36 @@ const csvFileErrorMessage = document.querySelector('.dialog-error');
 let csvData = null;
 
 function closeDialog() {
-    csvFileErrorMessage.textContent = '';
-    dialog.close();
+  csvFileErrorMessage.textContent = '';
+  dialog.close();
 }
 
 function renderCsvFiles(files) {
-    csvFileNames.innerHTML = '';
-    files.forEach((file) => {
-        const li = document.createElement('li');
-        li.textContent = file;
-        csvFileNames.appendChild(li);
-    });
+  csvFileNames.innerHTML = '';
+  files.forEach((file) => {
+    const li = document.createElement('li');
+    li.textContent = file;
+    csvFileNames.appendChild(li);
+  });
 }
 
 openCsvFileListBtn.addEventListener('click', async () => {
-    csvData = await getCsvFiles();
-    csvFilePathEl.textContent = `※解析対象ファイルは ${csvData.CSV_FILES_DIR} 配下のファイルです`;
-    renderCsvFiles(csvData.csv_files);
-    dialog.showModal();
+  csvData = await getCsvFiles();
+  csvFilePathEl.textContent = `※解析対象ファイルは ${csvData.CSV_FILES_DIR} 配下のファイルです`;
+  renderCsvFiles(csvData.csv_files);
+  dialog.showModal();
 });
 
 closeCsvFileListBtn.addEventListener('click', () => {
-    closeDialog();
+  closeDialog();
 });
 
 determineCsvFileBtn.addEventListener('click', async () => {
-    const response = await determineCsvFile(csvData);
-    if (!response.ok) {
-        const error = await response.json();
-        csvFileErrorMessage.textContent = error.detail;
-        return;
-    }
-    closeDialog();
+  const response = await determineCsvFile(csvData);
+  if (!response.ok) {
+    const error = await response.json();
+    csvFileErrorMessage.textContent = error.detail;
+    return;
+  }
+  closeDialog();
 });

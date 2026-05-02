@@ -1,4 +1,8 @@
-from api.schemas.run_query import SubqueryAnalyzeResult, SubqueryAnalyzeResultList, TableInfo
+from api.schemas.run_query import (
+    SubqueryAnalyzeResult,
+    SubqueryAnalyzeResultList,
+    TableInfo,
+)
 from api.services.analyze_subquery.subquery_builder import AnalyzeSubquery
 
 
@@ -14,7 +18,10 @@ class QueryStructureAnalyzer:
                 end_index=subquery.end_index,
                 query=subquery.query,
                 depth=subquery.depth,
-                tables_name_alias=[TableInfo(name=name, alias=alias) for name, alias in subquery.tables_name_alias],
+                tables_name_alias=[
+                    TableInfo(name=name, alias=alias)
+                    for name, alias in subquery.tables_name_alias
+                ],
                 parent_alias=subquery.parent_alias,
                 result=[],
             )

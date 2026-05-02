@@ -1,10 +1,11 @@
 from fastapi import APIRouter, HTTPException
+
 from api.schemas.run_query import QueryInfo, RunQueryResponse
 from api.services.analyze_subquery.query_structure_analyzer import (
     QueryStructureAnalyzer,
 )
-from api.services.analyze_subquery.subquery_runner import SubqueryRunner
 from api.services.analyze_subquery.sort_subquery import SortSubqueryByDepthDesc
+from api.services.analyze_subquery.subquery_runner import SubqueryRunner
 from api.validators.query_validator import QueryValidator
 
 router = APIRouter()

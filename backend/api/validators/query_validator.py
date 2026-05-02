@@ -1,5 +1,6 @@
 import sqlglot
-from sqlglot import parse_one, exp, errors
+from sqlglot import errors, exp, parse_one
+
 from api.db.connection import get_connection
 
 
@@ -35,5 +36,6 @@ class QueryValidator:
         missing = query_tables - existing
         if missing:
             raise ValueError(
-                f"次のテーブルに対応するCSVファイルがアップロードされていません: {', '.join(sorted(missing))}"
+                "次のテーブルに対応するCSVファイルがアップロードされていません: "
+                f"{', '.join(sorted(missing))}"
             )

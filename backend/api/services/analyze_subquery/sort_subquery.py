@@ -2,7 +2,6 @@ from api.schemas.run_query import SubqueryAnalyzeResultList
 
 
 class SortSubqueryByDepthDesc:
-
     def __init__(self, subqueries: SubqueryAnalyzeResultList):
         self.subqueries = subqueries
 
