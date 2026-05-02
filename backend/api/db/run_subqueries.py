@@ -7,7 +7,9 @@ def run_subqueries(subqueries: SubqueryAnalyzeResultList) -> SubqueryAnalyzeResu
     for subquery in subqueries:
         try:
             result = connection.sql(subquery.query)
-            subquery.result = [dict(zip(result.columns, record)) for record in result.fetchall()]
+            subquery.result = [
+                dict(zip(result.columns, record)) for record in result.fetchall()
+            ]
         except Exception as e:
             raise ValueError(f"サブクエリの実行に失敗しました: {e}")
     return subqueries

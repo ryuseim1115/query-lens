@@ -14,6 +14,7 @@ body {
     color 0.15s,
     border-color 0.15s;
 }
+
 .back-btn:hover {
   color: var(--text);
   border-color: var(--muted-light);
@@ -47,6 +48,7 @@ body {
   flex-shrink: 0;
   border-bottom: 1px solid var(--border);
 }
+
 .query-body {
   max-height: 160px;
   overflow-y: auto;
@@ -55,7 +57,7 @@ body {
 
 .query-display {
   white-space: pre-wrap;
-  font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
   font-size: 0.82rem;
   line-height: 1.6;
 }
@@ -78,6 +80,7 @@ body {
     background 0.15s,
     border-color 0.15s;
 }
+
 .table-item:hover,
 .table-item:focus-visible {
   background: var(--surface-hover);
@@ -88,6 +91,7 @@ body {
 .subquery-group {
   margin-bottom: 0.5rem;
 }
+
 .subquery-group:last-child {
   margin-bottom: 0;
 }
@@ -95,6 +99,7 @@ body {
 .no-result {
   display: none;
 }
+
 .no-result.visible {
   display: block;
 }
@@ -106,6 +111,7 @@ body {
   overflow: hidden;
   min-height: 0;
 }
+
 .result-body {
   flex: 1;
   overflow: auto;
@@ -118,21 +124,25 @@ body {
   font-family: monospace;
   width: 100%;
 }
+
 .result-table th,
 .result-table td {
   border: 1px solid var(--border);
   padding: 0.3rem 0.75rem;
   white-space: nowrap;
 }
+
 .result-table th {
   padding-top: 0.35rem;
   background: var(--surface-hover);
   color: var(--table-head-tx);
   text-align: left;
 }
+
 .result-table td {
   color: var(--table-body-tx);
 }
+
 .result-table tr:nth-child(even) td {
   background: var(--table-row-alt);
 }

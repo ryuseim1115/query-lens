@@ -1,9 +1,9 @@
-from fastapi import FastAPI
 import os
-from fastapi.staticfiles import StaticFiles
-from api.routers import run_query, get_csv_files, determine_csv_file, input, result
-from config import TEMPLATES_DIR
 
+from api.routers import determine_csv_file, get_csv_files, input, result, run_query
+from config import TEMPLATES_DIR
+from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
 static_path = os.path.join(TEMPLATES_DIR, "js")

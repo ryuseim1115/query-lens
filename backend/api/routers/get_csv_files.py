@@ -1,6 +1,7 @@
-from fastapi import APIRouter
 import os
+
 from config import CSV_FILES_DIR
+from fastapi import APIRouter
 
 router = APIRouter()
 

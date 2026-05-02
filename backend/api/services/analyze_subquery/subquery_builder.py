@@ -1,9 +1,14 @@
 from dataclasses import dataclass
-import sqlglot
 
-from api.services.analyze_subquery.subquery_range_finder import find_subquery_ranges, find_cte_ranges
+import sqlglot
 from api.services.analyze_subquery.subquery_depth_analyzer import get_subquery_depths
-from api.services.analyze_subquery.subquery_table_extractor import extract_tables_with_alias
+from api.services.analyze_subquery.subquery_range_finder import (
+    find_cte_ranges,
+    find_subquery_ranges,
+)
+from api.services.analyze_subquery.subquery_table_extractor import (
+    extract_tables_with_alias,
+)
 
 
 @dataclass
@@ -30,10 +35,14 @@ class AnalyzeSubquery:
         ranges = list(subquery_ranges_alias.keys())
         depths = get_subquery_depths(ranges)
         queries = [self.query[start:end] for start, end in ranges]
-        subquery_tables_name_alias = [extract_tables_with_alias(query) for query in queries]
+        subquery_tables_name_alias = [
+            extract_tables_with_alias(query) for query in queries
+        ]
 
         subqueries = []
-        for (start, end), query, depth, tables_name_alias in zip(ranges, queries, depths, subquery_tables_name_alias):
+        for (start, end), query, depth, tables_name_alias in zip(
+            ranges, queries, depths, subquery_tables_name_alias
+        ):
             subqueries.append(
                 Subquery(
                     start_index=start,
@@ -41,7 +50,8 @@ class AnalyzeSubquery:
                     query=query,
                     depth=depth,
                     tables_name_alias=tables_name_alias,
-                    parent_alias=cte_ranges_alias.get((start, end)) or subquery_ranges_alias.get((start, end)),
+                    parent_alias=cte_ranges_alias.get((start, end))
+                    or subquery_ranges_alias.get((start, end)),
                 )
             )
 

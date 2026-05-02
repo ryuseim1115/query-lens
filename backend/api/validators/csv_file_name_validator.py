@@ -14,7 +14,9 @@ class CsvFileNameValidator:
         if not table_name:
             raise ValueError("ファイル名が空です")
 
-        invalid_chars = re.findall(r'[^a-zA-Z0-9_\-]', table_name)
+        invalid_chars = re.findall(r"[^a-zA-Z0-9_\-]", table_name)
         if invalid_chars:
-            formatted = ''.join(f'「スペース」' if c == ' ' else f'「{c}」' for c in set(invalid_chars))
+            formatted = "".join(
+                "「スペース」" if c == " " else f"「{c}」" for c in set(invalid_chars)
+            )
             raise ValueError(f"{formatted}は使用できません")

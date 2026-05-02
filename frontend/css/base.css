@@ -28,6 +28,7 @@ header {
   font-weight: 700;
   color: var(--white);
 }
+
 .logo span {
   color: var(--accent);
 }
@@ -37,7 +38,7 @@ header {
   --surface: #1e2330;
   --border: #2d3448;
   --text: #e2e8f0;
-  --white: #ffffff;
+  --white: #fff;
   --muted: #64748b;
   --muted-light: #94a3b8;
   --accent: #60a5fa;
