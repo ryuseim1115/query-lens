@@ -30,8 +30,8 @@ class QueryValidator:
         if not query_tables:
             return
 
-        con = get_connection()
-        existing = {row[0] for row in con.sql("SHOW TABLES").fetchall()}
+        connection = get_connection()
+        existing = {row[0] for row in connection.sql("SHOW TABLES").fetchall()}
         missing = query_tables - existing
         if missing:
             raise ValueError(

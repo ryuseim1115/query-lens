@@ -1,4 +1,6 @@
-export function displayArrows(subqueries) {
+import { findParentAliasEl } from '../utility.js'
+
+export function displayLines(subqueries) {
     const tablesEl = document.getElementById('tables')
     const tablesRect = tablesEl.getBoundingClientRect()
 
@@ -34,10 +36,4 @@ export function displayArrows(subqueries) {
             ctx.stroke()
         }
     }
-}
-
-function findParentAliasEl(subquery) {
-    const parentGroupEl = document.querySelector(`.depth-group[data-depth="${subquery.depth - 1}"]`)
-    return [...parentGroupEl.querySelectorAll('.table-item')]
-        .find(item => item.textContent === subquery.parent_alias)
 }

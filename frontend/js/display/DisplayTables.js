@@ -1,5 +1,4 @@
 import { highlightQuery } from './DisplayQuery.js'
-import { displayQueryResult } from './DisplayQueryResult.js'
 
 export function displayTables(subqueries) {
     const tablesEl = document.getElementById('tables')
@@ -23,12 +22,17 @@ export function displayTables(subqueries) {
         subqueryGroupEl.className = 'subquery-group'
         subqueryGroupEl.dataset.startIndex = subquery.start_index
 
-        subquery.tables.forEach(table => {
+        subquery.tables_name_alias.forEach(table => {
             const tableEl = document.createElement('div')
             tableEl.className = 'table-item'
-            tableEl.textContent = table
-            tableEl.addEventListener('click', () => highlightQuery(subquery.start_index, subquery.end_index))
-            tableEl.addEventListener('click', () => displayQueryResult(subquery.start_index))
+            tableEl.textContent = table.name && table.alias
+                ? `${table.name} (${table.alias})`
+                : table.name || table.alias
+            tableEl.dataset.alias = table.alias || ''
+            tableEl.addEventListener('click', (e) => {
+                e.stopPropagation()
+                highlightQuery(subquery.start_index, subquery.end_index)
+            })
             subqueryGroupEl.appendChild(tableEl)
         })
 

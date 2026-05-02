@@ -1,10 +1,10 @@
 import sqlglot
 
 
-def find_subquery_ranges(query: str, tokens: list) -> list[tuple[int, int]]:
+def find_subquery_ranges(query: str, tokens: list) -> dict[tuple[int, int], str | None]:
     if not tokens:
-        return []
-    ranges = []
+        return {}
+    result: dict[tuple[int, int], str | None] = {}
     stack = []
     T = sqlglot.tokens.TokenType
     for i, token in enumerate(tokens):
@@ -18,30 +18,38 @@ def find_subquery_ranges(query: str, tokens: list) -> list[tuple[int, int]]:
             if stack:
                 start = stack.pop()
                 if start is not False:
-                    ranges.append((start, token.end + 1))
-    ranges.append((tokens[0].start, tokens[-1].end + 1))
-    return sorted(ranges)
+                    next_token = tokens[i + 1] if i + 1 < len(tokens) else None
+                    if next_token is None:
+                        alias = None
+                    elif next_token.token_type == T.ALIAS:
+                        alias_token = tokens[i + 2] if i + 2 < len(tokens) else None
+                        alias = alias_token.text if alias_token else None
+                    elif next_token.token_type == T.VAR:
+                        alias = next_token.text
+                    else:
+                        alias = None
+                    result[(start, token.end + 1)] = alias
+
+    result[(tokens[0].start, tokens[-1].end + 1)] = None
+    return dict(sorted(result.items()))
 
 
 def find_cte_ranges(tokens: list) -> dict[tuple[int, int], str]:
-    """CTE本体の位置→CTE名のマッピングを返す。"""
     T = sqlglot.tokens.TokenType
     cte_map: dict[tuple[int, int], str] = {}
     for i, token in enumerate(tokens):
         if token.token_type != T.L_PAREN:
             continue
-        next_tok = tokens[i + 1] if i + 1 < len(tokens) else None
-        if not (next_tok and next_tok.token_type == T.SELECT):
+        next_token = tokens[i + 1] if i + 1 < len(tokens) else None
+        if not (next_token and next_token.token_type == T.SELECT):
             continue
-        # IDENTIFIER AS ( の並びを確認
         if i < 2:
             continue
         prev1 = tokens[i - 1]
         prev2 = tokens[i - 2]
-        if prev1.text.upper() != 'AS':
+        if prev1.text.upper() != "AS":
             continue
         cte_name = prev2.text
-        # 対応する R_PAREN を探す
         depth = 1
         for k in range(i + 1, len(tokens)):
             if tokens[k].token_type == T.L_PAREN:
