@@ -1,8 +1,20 @@
+import { findParentAliasEl } from '../utility.js'
 
-export function displayQueryResult(start_index) {
-    const stored = JSON.parse(sessionStorage.getItem('querySession'))
-    const subquery = stored.subqueryResults.find(s => s.start_index === start_index)
+export function displayQueryResult(subqueries) {
+    subqueries.forEach(subquery => {
+        const parentAlias = findParentAliasEl(subquery)
+        if (!parentAlias) return;
+        //親エイリアスが押下された時のみイベント追加
+        parentAlias.addEventListener('click', () => renderQueryResult(subquery))
+    })
+}
+
+function renderQueryResult(subquery) {
     const rows = subquery.result
+    if (!rows.length) {
+        noResult()
+        return
+    };
 
     const thead = document.querySelector('.result-body thead')
     const tbody = document.querySelector('.result-body tbody')
@@ -10,6 +22,8 @@ export function displayQueryResult(start_index) {
     tbody.replaceChildren()
 
     const columns = Object.keys(rows[0])
+
+
     thead.appendChild(buildHeaderRow(columns))
     rows.forEach(row => tbody.appendChild(buildDataRow(row, columns)))
 }
@@ -32,4 +46,9 @@ function buildDataRow(row, columns) {
         tr.appendChild(td)
     })
     return tr
+}
+
+function noResult() {
+    console.log('aa');
+    document.getElementById('no-result').style.display = 'block'
 }
