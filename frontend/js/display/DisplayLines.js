@@ -1,7 +1,7 @@
 import { findParentAliasEl } from '../utility.js'
 
 export function displayLines(subqueries) {
-    const tablesEl = document.getElementById('tables')
+    const tablesEl = document.querySelector('.tables-list')
     const tablesRect = tablesEl.getBoundingClientRect()
 
     const canvas = document.createElement('canvas')
@@ -14,12 +14,13 @@ export function displayLines(subqueries) {
     tablesEl.appendChild(canvas)
 
     const ctx = canvas.getContext('2d')
-    ctx.strokeStyle = '#ff0000'
+    ctx.strokeStyle = '#60a5fa'
 
     for (const subquery of subqueries) {
         if (!subquery.parent_alias) continue
 
         const parentEl = findParentAliasEl(subquery)
+        if (!parentEl) continue
         const parentRect = parentEl.getBoundingClientRect()
         const toX = parentRect.x - tablesRect.x
         const toY = parentRect.y + parentRect.height / 2 - tablesRect.y

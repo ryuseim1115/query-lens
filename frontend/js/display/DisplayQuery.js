@@ -1,5 +1,8 @@
+let _originalQuery = '';
+
 export function displayQuery(query) {
-    const queryDisplayEl = document.getElementById('query-display');
+    _originalQuery = query;
+    const queryDisplayEl = document.querySelector('.query-display');
     queryDisplayEl.textContent = query;
 }
 
@@ -11,10 +14,9 @@ function escapeHtml(text) {
 }
 
 export function highlightQuery(start_index, end_index) {
-    const queryDisplayEl = document.getElementById('query-display');
-    const query = queryDisplayEl.textContent;
-    const before = escapeHtml(query.slice(0, start_index));
-    const highlighted = escapeHtml(query.slice(start_index, end_index));
-    const after = escapeHtml(query.slice(end_index));
+    const queryDisplayEl = document.querySelector('.query-display');
+    const before = escapeHtml(_originalQuery.slice(0, start_index));
+    const highlighted = escapeHtml(_originalQuery.slice(start_index, end_index));
+    const after = escapeHtml(_originalQuery.slice(end_index));
     queryDisplayEl.innerHTML = `${before}<mark>${highlighted}</mark>${after}`;
 }
