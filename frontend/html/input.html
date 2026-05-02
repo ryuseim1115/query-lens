@@ -1,55 +1,58 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QueryLens</title>
-  <link rel="stylesheet" href="/css/index.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>QueryLens</title>
+    <link rel="stylesheet" href="/css/base.css" />
+    <link rel="stylesheet" href="/css/input.css" />
+  </head>
 
-<header>
-  <div class="logo">Query<span>Lens</span></div>
-</header>
+  <body>
+    <header>
+      <div class="logo">Query<span>Lens</span></div>
+    </header>
 
-<main>
-  <div class="form-card">
-    <h2>SQLクエリを入力して解析を開始</h2>
+    <main>
+      <div class="query-form">
+        <form>
+          <div class="query-header-row">
+            <label>クエリ</label>
+            <div class="database-type-row">
+              <label>DB タイプ</label>
+              <select name="databaseType">
+                <option value="mysql">MySQL</option>
+                <option value="postgresql">PostgreSQL</option>
+                <option value="sqlite">SQLite</option>
+              </select>
+            </div>
+          </div>
+          <textarea
+            name="query"
+            spellcheck="false"
+          ></textarea>
+        </form>
 
-    <form id="queryForm">
-      <div class="field-row" style="margin-bottom:0.5rem;">
-        <label for="databaseType">DB タイプ</label>
-        <select name="databaseType" id="databaseType">
-          <option value="mysql">MySQL</option>
-          <option value="postgresql">PostgreSQL</option>
-          <option value="sqlite">SQLite</option>
-        </select>
+        <div class="form-btn-row">
+          <button class="analysis-btn">解析</button>
+          <button class="open-csv-btn">CSVファイル確認</button>
+        </div>
+
+        <div class="query-error"></div>
       </div>
-      <textarea id="queryInput" name="query" spellcheck="false"
-        placeholder="SELECT ... FROM ..."></textarea>
-    </form>
+    </main>
 
-    <div class="btn-row">
-      <button class="primary" id="analysisStartBtn">🔍 解析</button>
-      <button class="secondary" id="openCsvFileList">CSVファイル確認</button>
-    </div>
+    <dialog class="csv-file-dialog">
+      <h2>解析対象ファイル</h2>
+      <small class="csv-file-path"></small>
+      <ol class="csv-file-names"></ol>
+      <div class="dialog-btn-row">
+        <button class="determine-btn">解析対象を確定する</button>
+        <button class="close-btn">閉じる</button>
+      </div>
+      <div class="dialog-error"></div>
+    </dialog>
 
-    <div class="error-msg" id="errorMessage"></div>
-  </div>
-</main>
-
-<dialog id="csvFileList">
-  <h2>解析対象ファイル</h2>
-  <small id="csvFilePath"></small>
-  <ol id="csvFileItems"></ol>
-  <div class="dialog-footer">
-    <button class="primary" id="determineCsvFile">解析対象を確定する</button>
-    <button class="secondary" id="closeCsvFileList">閉じる</button>
-  </div>
-  <div class="dialog-error" id="csvFileErrorMessage"></div>
-</dialog>
-
-<script type="module" src="/static/pages/input/CsvDialog.js"></script>
-<script type="module" src="/static/pages/input/Analysis.js"></script>
-</body>
+    <script type="module" src="/static/pages/input/CsvDialog.js"></script>
+    <script type="module" src="/static/pages/input/Analysis.js"></script>
+  </body>
 </html>
