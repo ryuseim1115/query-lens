@@ -20,6 +20,7 @@ poetry install
 ## 起動
 
 ```bash
+source <(poetry env activate)
 cd backend
 uvicorn main:app --reload
 ```
