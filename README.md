@@ -1,41 +1,25 @@
 # QueryLens
 
+複雑なSQLクエリをステップごとに分解し、中間テーブルをプレビュー表示する解析ツール。
+
 ## セットアップ
 
-### 必要なもの
-- Python 3.14+
-- Poetry
-- Node.js
+**必要なもの**
 
-### インストール
+- Python 3.14+
+- Poetry 2.0+
+
+**インストール**
 
 ```bash
-# システム依存ライブラリ
-sudo apt install -y default-libmysqlclient-dev build-essential python3-dev
-
-# Python 依存パッケージ
-poetry install --no-root
-
-# JS/HTML/CSS ツール
-cd frontend && npm install
+git clone https://github.com/ryuseim1115/QueryLens.git
+cd QueryLens
+poetry install
 ```
 
-## 開発サーバー起動
+## 起動
 
 ```bash
 cd backend
 uvicorn main:app --reload
-```
-
-## リント・フォーマット
-
-```bash
-# Python（ルートで実行）
-poetry run ruff check backend/
-poetry run ruff format backend/
-
-# JS/HTML/CSS（frontend/ で実行）
-cd frontend
-npm run lint
-npm run format
 ```
